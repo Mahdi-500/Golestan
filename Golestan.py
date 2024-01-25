@@ -1,21 +1,22 @@
 import os
 import time
+import datetime as DT
+import error
+import information as info
 
-n = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',', '.', '/', ';', ':', '"', '\\', '\'',
-     '<', '>', '?', '*', '-', '_', '+', '=', '`', '~', '!', '@', '#', '$', '%', '^', '&', '(', ')', '[', ']', '{', '}']
-
-student = dict()
+student = {'0312764839': ('mahdi', 'wrehfg'), '03124569': ('ali', 'egr')}
 professor = dict()
-Class = dict()
-add_student = dict()
-add_professor = dict()
+Class = {}
+add_student = {}
+add_professor = {}
 id_list = list()
-mark = dict()
+mark = {'0312764839':('031', '1111111111', '20'), '03124569': ('031', '1111111111', '19.5')}
 mark_list = list()
 average_student_mark = dict()
 
-
+# all while true loops are for Real-Time checking so if the user enters a wrong input it wom't
 class Student:
+    
     def __init__(self) -> None:
         self.student = student
         self.Class = Class
@@ -27,981 +28,762 @@ class Student:
         self.average_st_mark = average_student_mark
 
 
-
-    # register student
-
+    #################################################
 
 
     def register_student(self) -> None:
 
         # name
 
-        name = input('enter your full name: ').lower()
+        while True:
 
-        if len(name) < 1 or len(name) > 20:
-            os.system('cls')
-            print('enter a valid name')
-            return
-        else:
-            for i in range(0, len(name)):
-                if name[i] in n:
-                    print('enter a valid name')
-                    return
+            name, flag = info.name()
+
+            if not flag:
+                break
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
         # id number
 
-        id_number = input('enter your id number: ')
+        while True:
 
-        if len(id_number) != 10:
-            os.system('cls')
-            print('enter valid id number \n')
-            return
-        else:
-            try:
-                int(id_number)
-            except ValueError:
-                os.system('cls')
-                print('id number have to be contain ONLY numbers \n')
-                return
+            id_number, flag = info.id(id_name= 'id number')
 
-        if self.student != {}:
-            if id_number in self.student.keys():
-                os.system('cls')
-                print('student with this id number is already registered \n')
-                return
+            if self.student != {}:
+                if id_number in self.student.keys():
+                    error.message("student with this id number is already registered \n")
+                    return
+            if not flag:
+                break
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-        # entering year
+        while True:
 
-        entering_year = input('enter your entery year: ')
+            # entry year
 
-        try:
-            int(entering_year)
-        except ValueError:
-            os.system('cls')
-            print('eentering year have to be ONLY numbers \n')
-            return
+            entry_year = ''
+            flag, entry_year = error.try_except(entry_year, "enter the entry year: ")
 
-        if int(entering_year) < 1300 or int(entering_year) > 1500:
-            os.system('cls')
-            print('enter a year between 1300 till 1500 \n')
-            return
+            if flag:
+                error.message("enter a valid value")
+
+            if error.just_number(entry_year):
+                error.message("only numbers are allowed")
+
+            elif error.length(entry_year, 4):
+                error.message("entry year must be 4 digits")
+
+            elif int(entry_year) < 1300 or int(entry_year) > 1500:
+                error.message("entry year must be a year between 1300 till 1500")
+            
+            else:
+                break
+        
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
         # field
 
-        field = input('enter your field: ').lower()
+        while True:
 
-        if len(field) < 1 or len(field) > 20:
-            os.system('cls')
-            print('field have to be ONLY contain letters \n')
-            return
-        else:
-            for i in range(0, len(field)):
-                if field[i] in n:
-                    os.system('cls')
-                    print('enter a valid field \n')
-                    return
+            field, flag = info.field()
+        
+            if not flag:
+                break
 
-        self.student[id_number] = name, entering_year, field
-        os.system('cls')
-        print('** welcome to golestan :) **')
-        time.sleep(2)
-        os.system('cls')
+        self.student[id_number] = name, entry_year, field, DT.datetime.now()
+        print("welcome to Golestan")    # successful
 
 
-
-    # register professor
-
+    ################################################
 
 
     def register_professor(self) -> None:
 
         # name
 
-        name = input('enter your full name: ').lower()
+        while True:
 
-        if len(name) < 1 or len(name) > 20:
-            os.system('cls')
-            print('enter a valid name \n')
-            return
-        else:
-            for i in range(0, len(name)):
-                if name[i] in n:
-                    os.system('cls')
-                    print('enter a valid name \n')
-                    return
+            name, flag = info.name()
+
+            if not flag:
+                break
+
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
         # id number
 
-        id_number = input('enter your id number: ')
+        while True:
 
-        if len(id_number) != 10:
-            os.system('cls')
-            print('enter valid id number \n')
-            return
-        else:
-            try:
-                int(id_number)
-            except ValueError:
-                os.system('cls')
-                print('id number have to be contain ONLY numbers \n')
-                return
+            id_number, flag = info.id(id_name= 'id number')
 
-        if self.professor != {}:
-            if id_number in professor.keys():
-                os.system('cls')
-                print('professor with this id number is already registered \n')
-                return
+            if not flag:
+                break
+
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
         # field
 
-        field = input('enter your field: ').lower()
+        while True:
 
-        if len(field) < 1 or len(field) > 20:
-            os.system('cls')
-            print('enter a valid field \n')
-            return
-        else:
-            for i in range(0, len(field)):
-                if field[i] in n:
-                    os.system('cls')
-                    print('enter a valid field \n')
-                    return
+            field, flag = info.field()
 
-        self.professor[id_number] = name, 
-        os.system('cls')
-        print('** welcome to golestan :) **')
-        time.sleep(2)
-        os.system('cls')
+            if not flag:
+                break
+
+        self.professor[id_number] = name, id_number, field
+        print("welcome to Golestan")        # success
 
 
-
-    # make class
-
+    ################################################
 
 
     def make_class(self) -> None:
 
         # name
 
-        name = input('enter class name: ').lower()
+        while True:
 
-        if len(name) < 1 or len(name) > 20:
-            os.system('cls')
-            print('enter a valid name \n')
-            return
-        else:
-            for i in range(0, len(name)):
-                if name[i] in n:
-                    os.system('cls')
-                    print('enter a valid name \n')
-                    return
+            name, flag = info.name()
+
+            if not flag:
+                break
+        
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
         # class id
 
-        class_id = input('enter class id number: ')
+        while True:
 
-        if len(class_id) != 10:
-            os.system('cls')
-            print('id number have to be contain ONLY numbers \n')
-            return
-        else:
-            try:
-                int(class_id)
-            except ValueError:
-                os.system('cls')
-                print('enter valid id number \n')
-                return
+            class_id, flag = info.id(id_name= 'class id')
 
-        if self.Class != {}:
-            if class_id in self.Class.keys():
-                os.system('cls')
-                print('class with this id number is already in use \n')
-                return
+            if not flag:
+                break
+
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
         # field
 
-        field = input('enter class field: ').lower()
+        while True:
 
-        if len(field) < 1 or len(field) > 20:
-            os.system('cls')
-            print('enter a valid field \n')
-            return
-        else:
-            for i in range(0, len(field)):
-                if field[i] in n:
-                    os.system('cls')
-                    print('enter a valid field \n')
-                    return
+            field, flag = info.field()
+
+            if not flag:
+                break
 
         self.Class[class_id] = name, field
-        os.system('cls')
-        print('class added successfully')
-        time.sleep(2)
-        os.system('cls')
+        print("class added successfuly")    # success
 
 
 
-    # add student
+    ################################################
 
 
-
-    def add_student(self) -> None:
+    def add_student(self) -> None:  # add student to a class
 
         # id number
 
-        id_number = input('enter student id number: ')
+        while True:
 
-        if len(id_number) != 10:
-            os.system('cls')
-            print('enter valid id number \n')
-            return
-        else:
-            try:
-                int(id_number)
-            except ValueError:
-                os.system('cls')
-                print('id number have to be contain ONLY numbers \n')
-                return
+            student_id, flag = info.id(id_name= 'student id')
 
-        if self.student != {}:
-            if id_number not in self.student.keys():
-                os.system('cls')
-                print('invalid student \n')
-                return
+            if self.student != {}:
+                if student_id not in self.student.keys():
+                    error.message("No student with this id number exist")  # error message
+
+            elif not flag:
+                break
+
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
         # class id
 
-        class_id = input('enter class id number: ')
+        while True:
+            
+            class_id, flag = info.id(id_name= ' class id')
 
-        if len(class_id) != 10:
-            os.system('cls')
-            print('enter valid id number \n')
-            return
-        else:
-            try:
-                int(class_id)
-            except ValueError:
-                os.system('cls')
-                print('enter valid id number \n')
-                return
+            if self.Class != {}:
+                if class_id not in self.Class.keys():
+                    error.message("no class found with the given class id")  # error message
 
-        if self.Class != {}:
+            if self.Class[class_id][1] != self.student[student_id][2]:
+                error.message("student field does not match")  # error message
+
+            if self.add_st != {}:
+                if class_id in self.add_st[student_id]:
+                    error.message("studnet is already registered to this class")  # error message
+                    return
+                
+            elif not flag:
+                break
+        
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+            
+        """
+        here it'll add student id to the dictionary if it doesn't exist in dict keys
+        then it saves class ids in a list why?
+        because if we wnat to add more class for this student in future we can easilly do it just by appending it
+        """
+
+        if student_id not in self.add_st.keys():
+            self.add_st[student_id] = [class_id]
+            error.message("student added successfully")  # success
+
+        elif student_id in self.add_st.keys():
+            self.add_st[student_id].append(class_id)
+            error.message("student added successfully")  # success
+
+
+    ################################################
+
+
+    def add_professor(self) -> None:    # assign a professor to a class
+
+        # id number
+
+        while True:
+            
+            professor_id, flag = info.id(id_name= 'id number')        
+
+            if professor_id not in self.professor.keys():
+                error.message("no professor with given id number exist")  # error message
+
+            elif not flag:
+                break
+        
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
+        # class id
+
+        while True:
+
+            class_id, flag = info.id(id_name= 'class_id')
+
+
             if class_id not in self.Class.keys():
-                os.system('cls')
-                print('invalid class \n')
-                return
+                error.message("no class found with given class id")  # error message
 
-        if self.Class[class_id][1] != self.student[id_number][2]:
-            os.system('cls')
-            print('student field is not match \n')
-            return
+            if self.Class[class_id][1] != self.professor[professor_id][1]:
+                error.message("professor field does not match")  # error message
 
-        if self.add_st != {}:
-            if id_number == self.add_st[class_id][0]:
-                os.system('cls')
-                print('student is alredy registered \n')
-                return
-
+            elif not flag:
+                break
         
-        self.id_list.append(id_number)
-        self.add_st[class_id] = self.id_list
-        os.system('cls')
-        print('student added successfully')
-        time.sleep(2)
-        os.system('cls')
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+            
+        """
+        the idea here is that if this professor has no class
+        it'll assign a class to the professor and saves the class id number in a list 
+        beacause in future if you want to add more classes to this professor 
+        you can easily do it by just appending it
+        """
+
+        if professor_id not in self.add_pr.keys():
+            self.add_pr[professor_id] = [class_id]
+        
+        # here if this professor already have at least one class
+        # it'll check if this professor have this class already or not
+        # if it doesn't; it'll append the class id to list
+        # otherwise, it will show an error message
+            
+        elif professor_id in self.add_pr.keys():
+            for i in range(0, len(self.add_pr[professor_id])):
+                if class_id != self.add_pr[professor_id][i]:
+                    self.add_pr[professor_id].append(class_id)
+                    error.message("prodessor added to class successfully")  # success
+
+                else:
+                    error.message("this class is already assigned to this professor")  # error 
 
 
-
-    # add professor
-
+    ################################################
 
 
-    def add_professor(self) -> None:
+    def student_status(self) -> None:   # shows student name, entering year, field and clsses
 
         # id number
 
-        id_number = input('enter professor id number: ')
+        while True:
 
-        if len(id_number) != 10:
-            os.system('cls')
-            print('enter valid id number \n')
-            return
-        else:
-            try:
-                int(id_number)
-            except ValueError:
-                os.system('cls')
-                print('enter valid id number \n')
-                return
+            id_number, flag = info.id(id_name= 'id number')
 
-        if id_number not in self.professor.keys():
-            os.system('cls')
-            print('invalid professor \n')
-            return
-        
-        # class id
+            if self.student != {}:
+                if id_number not in self.student.keys():
+                    error.message("no student found with given id number")
 
-        class_id = input('enter class id number: ')
-
-        if len(class_id) != 10:
-            os.system('cls')
-            print('enter valid id number \n')
-            return
-        else:
-            try:
-                int(class_id)
-            except ValueError:
-                os.system('cls')
-                print('id number have to be contain ONLY numbers \n')
-                return
-
-
-        if class_id not in self.Class.keys():
-            os.system('cls')
-            print('invalid class \n')
-            return
-
-        if self.Class[class_id][1] != self.professor[id_number][1]:
-            os.system('cls')
-            print('professor field is not match \n')
-            return
-
-        if self.add_pr != {}:
-            try:
-                self.add_pr[class_id][0]
-            except KeyError:
-                pass
-            else:
-                os.system('cls')
-                print('this class has professor \n')
+            else:   # shows an error message if dict is empty
+                error.message("there are no students")  # error message
                 return
             
-        self.add_pr[class_id] = id_number
-        os.system('cls')
-        print('professor successfully added to the class')
-        time.sleep(2)
-        os.system('cls')
+            if not flag:
+                break
 
-
-
-    # student status
-
-
-    def student_status(self) -> None:
-
-        # id number
-
-        id_number = input('enter student id number: ')
-
-        if len(id_number) != 10:
-            os.system('cls')
-            print('enter valid id number \n')
-            return
-        else:
-            try:
-                int(id_number)
-            except ValueError:
-                os.system('cls')
-                print('id number have to be contain ONLY numbers \n')
-                return
-
-        if self.student != {}:
-            if id_number not in self.student.keys():
-                os.system('cls')
-                print('invalid student \n')
-                return
-
-        add_student_key_list = list(self.add_st.keys())
-        add_student_value_list = list(self.add_st.values())
-
-        flag = False
-        class_id = []
-        if id_number in add_student_value_list:
-            flag = True
-            for i in range(0, len(add_student_value_list)):
-                if add_student_value_list[i] == id_number:
-                    position = i
-                    class_id.append(add_student_key_list[position])
-        
-
-        class_name = []
-        for i in range(0, len(class_id)):
-            if class_id[i] in self.Class.keys():
-                class_name.append(self.Class[class_id[i]][0])
+        # show time
 
         os.system('cls')
         print('name: ', self.student[id_number][0])
         print('entering year: ', self.student[id_number][1])
         print('field: ', self.student[id_number][2])
-
-        if flag:
-            print('class: ')
-            for i in range(0, len(class_name)):
-                print(class_name[i])
+        print('class:')
+        for i in range(0, len(self.add_st[id_number])):
+            class_id = self.add_st[id_number][i]    # save the class id number i
+            print(self.Class[class_id][0])      # shows the class id number i name
         
         time.sleep(2)
         os.system('cls')
 
 
-
-    # professor status
-
+    ################################################
 
 
-    def professor_status(self) -> None:
+    def professor_status(self) -> None:  # shows professor name, field and classes
 
         # id number
 
-        id_number = input('enter professor id number: ')
+        while True:
 
-        if len(id_number) != 10:
-            os.system('cls')
-            print('enter valid id number \n')
-            return
-        else:
-            try:
-                int(id_number)
-            except ValueError:
-                os.system('cls')
-                print('id number have to be contain ONLY numbers \n')
+            professor_id, flag = info.id(id_name='id number')
+
+            if self.professor != {}:
+                if professor_id not in self.professor.keys():
+                    error.message("no professor founded with given id number")
+            
+            else:   # shows an error message if dict is empty
+                error.message("there are no professor")  # error message
                 return
+            
+            if not flag:
+                break
 
-        if id_number not in self.professor.keys():
-            os.system('cls')
-            print('invalid professor \n')
-            return
-        
-       
-        add_professor_key_list = list(self.add_pr.keys())
-        add_professor_value_list = list(self.add_pr.values())
-
-        flag = False
-        class_id = []
-        if id_number in add_professor_value_list:
-            flag = True
-            for i in range(0, len(add_professor_value_list)):
-                if add_professor_value_list[i] == id_number:
-                    position = i
-                    class_id.append(add_professor_key_list[position])
-        
-
-        class_name = []
-        for i in range(0, len(class_id)):
-            if class_id[i] in self.Class.keys():
-                class_name.append(self.Class[class_id[i]][0])
-
+        # show time
+            
         os.system('cls')
-        print('name: ', self.professor[id_number][0])
-        print('field: ', self.professor[id_number][1])
-
-        if flag:
-            print('class: ')
-            for i in range(0, len(class_name)):
-                print(class_name[i])
+        print('name: ', self.professor[professor_id][0])
+        print('field: ', self.professor[professor_id][1])
+        print('class: ')
+        for i in range(0, len(self.add_pr[professor_id])):
+            class_id = self.add_pr[professor_id][i]   # save the class id, number i
+            print(self.Class[class_id][0])  # shows the class id number i's name - success
 
         time.sleep(2)
         os.system('cls')
 
 
-    # class status
+    ################################################
 
 
-
-    def class_status(self) -> None:
+    def class_status(self) -> None:     # shows a class students
 
         # class id
 
-        class_id = input('enter class id number: ')
+        while True:
 
-        if len(class_id) != 10:
-            os.system('cls')
-            print('enter valid id number \n')
-            return
-        else:
-            try:
-                int(class_id)
-            except ValueError:
-                os.system('cls')
-                print('id number have to be contain ONLY numbers \n')
-                return
+            class_id, flag= info.id(id_name= 'class id')
 
-        if self.Class != {}:
-            if class_id not in self.Class.keys():
-                os.system('cls')
-                print('invalid class \n')
-                return
+            if self.Class != {}:
+                if class_id not in self.Class.keys():
+                    error.message("no class founded with given class id")  # error message
 
-        try:
-            self.add_pr[class_id]
-        except KeyError:
-            print(None)
-        else:
-            pr_id = self.add_pr[class_id]
-            print('professor name:', self.professor[pr_id][0])
+            elif not flag:
+                break
 
-        st_id = self.add_st[class_id]
-        os.system('cls')
-        print('student name: ')
-        for i in range(0, len(st_id)):
-            print(self.student[st_id[i]][0])
+        # iterates on add_pr keys and checks if professor have this class or not
+
+        for i in self.add_pr.keys():
+            if class_id in self.add_pr[i]:
+                print(f"teacher: {self.professor[i][0]}")  # success
+                break
+        
+        # it iterates on add_st keys and checks if the student have this class or not
+
+        print("students: ")
+        for i in self.add_st.keys():
+            if class_id in self.add_st[i]:
+                print(self.student[i][0])  # success
 
         time.sleep(2)
         os.system('cls')
 
 
-
-    # set final marks
-
+    ################################################
 
 
-    def set_final_mark(self) -> None:
+    def set_final_mark(self) -> None:  # assigning grade for students
 
         # professor id number
 
-        professor_id = input('enter professor id number: ')
+        while True:
 
-        if len (professor_id) != 10:
-            os.system('cls')
-            print('enter a valid id number \n')
-            return
-        try:
-            int(professor_id)
-        except ValueError:
-            os.system('cls')
-            print('id number have to be contain ONLY numbers \n')
-            return
+            professor_id, flag = info.id(id_name= 'professor id')
 
-        if professor_id not in self.professor.keys():
-            os.system('cls')
-            print('invalid professor \n')
-            return
+            if professor_id not in self.professor.keys():
+                error.message("no professor found with given id")  # error message
+
+            elif not flag:
+                break
         
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
         # student id number
 
-        student_id = input('enter student id number: ')
+        while True:
 
-        if len(student_id) != 10:
-            os.system('cls')
-            print('enter a valid id number \n')
-            return
-        
-        try:
-            int(student_id)
-        except ValueError:
-            os.system('cls')
-            print('id number have to be contain ONLY numbers \n')
-            return
+            student_id, flag = info.id(id_name= student_id)
 
-        if student_id not in self.student.keys():
-            os.system('cls')
-            print('invalid student \n')
-            return
+            if student_id not in self.student.keys():
+                error.message("no student found with given id")  # error message
+            
+            elif not flag:
+                break
         
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
         # class id
 
-        class_id = input('enter class id: ')
+        while True:
 
-        try:
-            int(class_id)
-        except ValueError:
-            os.system('cls')
-            print('id number have to be contain ONLY numbers \n')
-            return
+            class_id, flag = info.id(id_name= 'class id')
 
-        if class_id not in self.Class.keys():
-            os.system('cls')
-            print('invalid class \n')
-            return
+            if class_id not in self.Class.keys():
+                error.message("no class found with given id")  # error message
         
-        # if len(class_id) != 10:
-        #     os.system('cls')
-        #     print('enter a valid class number \n')
-        #     return
-        
-        # does professor have this class?
-        
-        if self.add_pr[class_id] != professor_id:
-            os.system('cls')
-            print('professor class is not match \n')
-            return
-        
-        # is the student registered in class?
+            # does professor have this class?
+            
+            if class_id not in self.add_pr[professor_id]:
+                error.message("this professor isn't registered on this class")  # error message
+            
+            # is the student registered on class?
 
-        if student_id not in self.add_st[class_id]:
-            os.system('cls')
-            print('student did not registered \n')
-            return
+            if student_id not in self.add_st[class_id]:
+                error.message("this student isn't registered on this class")  # error message
+
+            elif not flag:
+                break
         
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
         # entering grade
 
-        grade = input('enter grade: ')
+        while True:
 
-        if grade == '':
-            grade = 'None'
+            grade = input('enter grade: ')
 
-        else:
-            try:
-                float(grade)
-            except ValueError:
-                os.system('cls')
-                print('grade have to be contain ONLY numbers \n')
-                return
+            if grade == '':
+                grade = None
 
-            if float(grade) < 0 or float(grade) > 20:
-                os.system('cls')
-                print('gade have to be a number between 0 and 20 \n')
-                return
+            elif error.just_number(grade):
+                error.message("only numbers are allowed")  #error message
+
+            elif int(grade) < 0 or int(grade) > 20:
+                error.message("grade must be a number between 0 and 20")  # error message
+            
+            else:
+                break
+        
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+            
+        """
+        the idea in here is that if this student doesn't have any grade
+        it'll assign grade with class id and professor id to that student using 2D array
+        because in future if we wanted to add more grades to this student we can easily do it by appending the list
+        """
+
+        if student_id not in self.mark.keys():
+            self.mark[student_id] = [[professor_id, class_id, grade]]
 
         
-        mark_list.append([professor_id, class_id, grade])
-        self.mark[student_id] = mark_list
-        os.system('cls')
-        print('student final mark added or changed \n')
-        time.sleep(2)
-        os.system('cls')
+        # here if it has a student with given student id in dict keys 
+        # it will check if that student have grade for that class
+        # if it does have grade asks for confirmation to change the grade 
+        # to do that it will remove the old array and apped a new one
+        # if it does not have grade it will add a new array
+        
+        elif student_id in self.mark.keys():
+            
+            for i in range(0, len(self.mark[student_id])):
+                if class_id != self.mark[student_id][i][1]:
+                    self.mark[student_id].append([professor_id, class_id, grade])
+                    error.message("student grade added successfully")  # success
+
+                else:
+                    while True:
+
+                        flag, x = error.try_except(x, "this student already have a grade do you want to change it? (y/n)")
+                        if flag:
+                            error.message("enter a valid character")  # error message
+                        
+                        elif error.just_str(x) == True:
+                            error.message("letters only")  # error message
+
+                        else:
+                            if x == 'y':
+                                self.mark[student_id].remove(self.mark[student_id][i])
+                                self.mark[student_id].append([professor_id, class_id, grade])
+                                error.message("grade changed successfully")  # success
+
+                            elif x == 'n':
+                                break
+    
+
+    ################################################
 
 
-
-    # mark student
-
-
-
-    def mark_student(self) -> None:
+    def mark_student(self) -> None:  # shows a student grade for a class
         
         # id number
 
-        id_number = input('enter student id number: ')
+        while True:
 
-        if len(id_number) != 10:
-            os.system('cls')
-            print('enter valid id number \n')
-            return
-        else:
-            try:
-                int(id_number)
-            except ValueError:
-                os.system('cls')
-                print('id number have to be contain ONLY numbers \n')
-                return
-
-        if self.student != {}:
-            if id_number not in self.student.keys():
-                os.system('cls')
-                print('invalid student \n')
-                return
+            student_id, flag = info.id(id_name= 'student id')
             
+            if student_id not in self.student.keys():
+                error.message("no student found with given id number")  # error messsage
+
+            elif not flag:
+                break
+
+        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+          
         # class id
 
-        class_id = input('enter class id number: ')
+        while True:
 
-        if len(class_id) != 10:
-            os.system('cls')
-            print('enter valid id number \n')
-            return
-        else:
-            try:
-                int(class_id)
-            except ValueError:
-                os.system('cls')
-                print('id number have to be contain ONLY numbers \n')
-                return
+            class_id, flag = info.id(id_name= 'class id')
 
-        if self.Class != {}:
             if class_id not in self.Class.keys():
-                os.system('cls')
-                print('invalid class \n')
-                return
+                error.message("no class found with given class id")  # error message
+                
+            if class_id not in self.add_st[student_id]:
+                error.message("student is not registered in this class")  # error message
             
-        if id_number not in self.add_st[class_id]:
-            os.system('cls')
-            print('student not registered \n')
-            return
+            elif not flag:
+                break
         
-        name_class = self.Class[class_id][0]
-        student_name = self.student[id_number][0]
+        # show time
+            
+        class_name = self.Class[class_id][0]
+        student_name = self.student[student_id][0]
+        for i in range(0,len(self.mark[student_id])):  # saving grade
+            if self.mark[student_id][i][1] == class_id:
+                grade = self.mark[student_id][i][2]
+                break
 
         os.system('cls')
-        print('class name: ' + name_class)
-        print('name: ' + student_name)
-        print('grade: ' + self.mark[id_number][2] + '\n')
+        print(f"class name: {class_name}")
+        print(f"name: {student_name}")
+        print(f"grade: {grade}")  # success
         
 
-
-    # mark list
-
+    ################################################
 
 
-    def mark_list(self) -> None:
+    def mark_list(self) -> None:  # shows a grade list for the class
 
         # class id
 
-        class_id = input('enter class id: ')
+        while True:
 
-        if len(class_id) != 10:
-            os.system('cls')
-            print('enter a valid class id \n')
-            return
+            class_id, flag = info.id(id_name= 'class id')
 
-        try:
-            int(class_id)
-        except ValueError:
-            os.system('cls')
-            print('id number have to be contain ONLY numbers \n')
-            return
+            temp = Student()
+            if class_id not in self.Class.keys():
+                error.message("no lass found with given class id")  # error meesage
 
-        if class_id not in self.Class.keys():
-            os.system('cls')
-            print('invalid class \n')
-            return
+            elif not flag:
+                break
 
-        try:
-            self.add_pr[class_id][0]
-        except KeyError:
-            os.system('cls')
-            print('no professor \n')
-            return
-        
-        try:
-            self.add_st[class_id][0]
-        except KeyError:
-            os.system('cls')
-            print('no student')
-            return
+        # checking if a professor have any class with this class id
 
-        os.system('cls')
-        id_list = self.add_st[class_id]
-        for i in range(0, len(id_list)):
-            student_name = self.student[id_list[i]][0]
-            student_grade = self.mark[id_list[i]][2]
-            print('name: ' + student_name, '\tgrade: ' + student_grade)
+        for i in self.add_pr.keys():
+            if class_id not in self.add_pr[i][0]:
+                error.message("this class has no professor")  # error message
+                temp.mark_list()
+
+        # checking if this class has any student
+
+        for i in self.add_st.keys():
+            if class_id not in self.add_st[i]:
+                error.message("this class has no student")  # error message
+                temp.mark_list()
+
+        for i in self.mark.keys():
+            if class_id in self.mark[i]:
+                print(f"name: {self.student[i][0]}      {self.mark[i][2]}")  # success
 
 
+    ################################################
 
 
-    # average mark professor
-
-
-
-    def average_mark_professor(self) -> None:
+    def average_mark_professor(self) -> None:  # shows the avrage assigned mark by one professor
 
         # professor id number
 
-        professor_id = input('enter professor id number: ')
+        while True:
 
-        if len (professor_id) != 10:
-            os.system('cls')
-            print('enter a valid id number \n')
-            return
-        try:
-            int(professor_id)
-        except ValueError:
-            os.system('cls')
-            print('id number have to be contain ONLY numbers \n')
-            return
+            professor_id, flag = info.id(id_name= 'professor id')
 
-        if professor_id not in self.professor.keys():
-            os.system('cls')
-            print('invalid professor \n')
-            return
+            if professor_id not in self.professor.keys():
+                error.message("no professor found with given id number")
+
+            elif not flag:
+                break
         
-        # finding professor classes
-
-        key_list = list(self.add_pr.keys())
-
-        class_list = []
-        for i in range(0, len(key_list)):
-            if professor_id == self.add_pr[key_list[i]]:
-                class_list.append(key_list[i])
-
-        # finding student id number for each class code & calculates average
-
         sum = 0
-        count = 0
-        for i in range(0, len(class_list)):
-            student_list = self.add_st[class_list[i]]
-            for j in range(0, len(student_list)):
-                if self.mark[student_list[j]] != 'None':
-                    sum += float(self.mark[student_list[j]][2])
+        count = 0   # counts how many students are graded by this professor
+        for i in self.mark.keys():
+            if professor_id in self.mark[i]:
+                if self.mark[i][2] != None:
+                    sum += int(self.mark[i][2])
                     count += 1
 
-        if sum == 0:
-            os.system('cls')
-            print(None + '\n')
-            return
+        if sum != 0:
+            os.system("cls")
+            print(f"average grade: {round(sum/count, 2)}")
+        else:
+            print(None)
+
         
-        os.system('cls')
-        print('average grade for this professor is ' + str(round((sum / count), 2))+ '\n')
-        
+    ################################################
 
 
-    # average student mark
-
-
-
-    def average_mark_student(self) -> None:
+    def average_mark_student(self) -> None:  # shows the average mark of a student
 
         # id number
 
-        id_number = input('enter student id number: ')
+        while True:
 
-        if len(id_number) != 10:
-            os.system('cls')
-            print('enter valid id number \n')
-            return
-        else:
-            try:
-                int(id_number)
-            except ValueError:
-                os.system('cls')
-                print('id number have to be contain ONLY numbers \n')
-                return
+            student_id, flag = info.id(id_name= 'id number')
 
-        if self.student != {}:
-            if id_number not in self.student.keys():
-                os.system('cls')
-                print('invalid student \n')
-                return
+            if self.student != {}:
+                if student_id not in self.student.keys():
+                    error.message("no student found with given id number")  #error message
+
+                elif student_id not in self.mark.keys():
+                    error.message("this student has no grade")  # error message
+
+                elif not flag:
+                    break
 
         # calculates average
 
-        key_list = list(self.mark.keys())
-        sum = 0
-        count = 0
-        for i in range(0, len(list(self.mark.keys()))):
-            for j in range(0, len(self.mark[key_list[i]])):
-                if self.mark[key_list[i]][j][2] != 'None':
-                    sum += float(self.mark[key_list[i]][j][2])
-                    count += 1
+        """
+        here we iterate on self.mark with given student id number to find the grade
+        and calculate sum.
+        with every sum; count value will be increased by one unit
+        it also saves the field and the entery year to for easier search in future
+        """
 
-        if sum == 0:
+        sum = count = 0
+        for i in range(0, len(self.mark[student_id])):
+            if self.mark[student_id][i][2] != None:
+                sum += float(self.mark[student_id][i][2])
+                count += 1
+
+        if sum != 0:
             os.system('cls')
-            print(None + '\n')
-            return
-        
-        os.system('cls')
-        print('average student mark is ' + str(round((sum / count), 2)) + '\n')
-        self.average_st_mark[id_number] = str(round((sum / count), 2))
+            print('average student mark is ' + str(round((sum / count), 2)) + '\n')  #success
+            self.average_st_mark[student_id].append([str(round((sum / count), 2)), 
+                                                     self.student[student_id][1], 
+                                                     self.student[student_id][2]])
+
+        else:
+            error.message(None)  # success
 
 
-
-    # top student
-
+    ################################################
 
 
-    def top_student(self) -> None:
+    def top_student(self) -> None:  # shows the top student of a class
         
         # field
 
-        field = input('enter your field: ').lower()
+        while True:
 
-        if len(field) < 1 or len(field) > 20:
-            os.system('cls')
-            print('enter a valid field \n')
-            return
-        else:
-            for i in range(0, len(field)):
-                if field[i] in n:
-                    os.system('cls')
-                    print('field have to be ONLY contain letters \n')
-                    return
-                
-        # entering year
+            field, flag = info.field()
 
-        entering_year = input('enter your entery year: ')
-
-        try:
-            int(entering_year)
-        except ValueError:
-            os.system('cls')
-            print('eentering year have to be ONLY numbers \n')
-            return
-
-        if int(entering_year) < 1300 or int(entering_year) > 1500:
-            os.system('cls')
-            print('enter a year between 1300 till 1500 \n')
-            return
-        
-        key_list = list(self.student.keys())
-        
-        for i in range (0, len(key_list)):
-            if self.student[key_list[i]][1] == entering_year and self.student[key_list[i]][2] == field:
-                id_list.append(key_list[i])
+            if not flag:
                 break
+                
+        while True:
+
+            # entry year
+
+            entry_year = ''
+            flag, entry_year = error.try_except(entry_year, "enter the entry year: ")
+
+            if flag:
+                error.message("enter a valid value")
+
+            if error.just_number(entry_year):
+                error.message("only numbers are allowed")
+
+            elif error.length(entry_year, 4):
+                error.message("entry year must be 4 digits")
+
+            elif int(entry_year) < 1300 or int(entry_year) > 1500:
+                error.message("entry year must be a year between 1300 till 1500")
+            
             else:
-                os.system('cls')
-                print(None + '\n')
-                return
-
-        max = float(self.average_st_mark[key_list[0]])
-
-        for i in range(1, len(key_list)):
-            if float(self.average_st_mark[key_list[i]]) > max:
-                max = self.average_st_mark[key_list[i]]
-                id_number = key_list[i]
+                break
         
-        os.system('cls')
-        print(self.student[id_number][0] + '\n')
+        """
+        in here due to the saving method we used in average mark student
+        we can check both entry year and field with one loop and find maximum grade
+        """
+
+        max = 0
+        id = ''
+        for i in self.average_st_mark.keys():
+            if self.average_st_mark[i][1] == entry_year and self.average_st_mark[i][2] == field:
+                if float(self.average_st_mark[i][0]) > max:
+                    max = float(self.average_st_mark[i][0])
+                    id = i
+                elif float(self.average_st_mark[i][0]) == max:
+                    if self.student[i][3] < self.student[id][3]:
+                        max = float(self.average_st_mark[i][0])
 
 
-
-    # top mark    
-
+    ################################################   
 
 
-    def top_mark(self) -> None:
+    def top_mark(self) -> None:  # shows the highest mark of a class
 
         # class id
 
-        class_id = input('enter class id: ')
+        while True:
 
-        if len(class_id) != 10:
-            os.system('cls')
-            print('enter a valid class id \n')
-            return
+            class_id, flag = info.id(id_name= 'class id')
 
-        try:
-            int(class_id)
-        except ValueError:
-            os.system('cls')
-            print('id number have to be contain ONLY numbers \n')
-            return
-
-        if class_id not in self.Class.keys():
-            os.system('cls')
-            print('invalid class \n')
-            return
+            if not flag:
+                break
         
-        
-        if list(self.mark.values())[0][0][2] != 'None':
-            id_list = self.add_st[class_id]
-            max = 0
-            for i in range(0, len(id_list)):
-                value_list = self.mark[id_list[i]]
-                for j in range(0, len(value_list)):
-                    if self.mark[id_list[i]][j][1] == class_id:
-                        if float(self.mark[id_list[i]][j][2]) > max and self.mark[id_list[i]][j][2] != 'None':
-                            max = float(self.mark[id_list[i]][j][2])
-            os.system('cls')
-            print('maximum garde is ' + str(max) + '\n')
-            
+        max = 0
+        for i in self.mark.keys():  # iterated on keys
+            for j in range(0, len(self.mark[i])):  # iterates on values of key i
+
+                if self.mark[i][j][1] == class_id:
+                    if self.mark[i][j][2] != None and self.mark[i][j][2] > max:
+                        max = self.mark[i][j][2]
+
+        if max == 0:
+            error.message("this class students doesn't have any mark")  # success
         else:
-            flag = False
-            value_list = list(self.mark.values())
-            for i in range(0, len(value_list)):
-                for j in range(0, len(list(self.mark.values())[i])):
-                    if list(self.mark.values())[i][j][2] == 'None':
-                        flag = True
-                    else:
-                        flag = False
-            if flag:
-                print(None + '\n')
-                return
+            os.system("cls")
+            print(f'maximum grade for this calss is {max}')
+            time.sleep(3)
+            return
+        
+
+################################################################################################
+            
+    
+# main menu
+            
 while True:
 
     print('1 - register student \t\t 2 - register professor \n3 - make class \t\t         4 - add student')
     print('5 - add professor \t\t 6 - student status \n7 - professor status \t\t 8 - class status')
     print('9 - set final mark \t\t 10 - mark student \n11 - average professor mark \t 12 - average student mark')
-    print('13 - top student \t\t 14 - top mark')
+    print('13 - top student \t\t 14 - top mark \n15 - mark list')
     x = int(input(''))
     os.system('cls')
 
@@ -1047,4 +829,6 @@ while True:
     elif x == 14:
         a= Student()
         a.top_mark()
-
+    elif x == 15:
+        a = Student()
+        a.mark_list()
