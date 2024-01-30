@@ -4,13 +4,13 @@ import datetime as DT
 import error
 import information as info
 
-student = {'0312764839': ('mahdi', 'wrehfg'), '03124569': ('ali', 'egr')}
+student = dict()
 professor = dict()
-Class = {}
-add_student = {}
-add_professor = {}
+Class = dict()
+add_student = dict()
+add_professor = dict()
 id_list = list()
-mark = {'0312764839':('031', '1111111111', '20'), '03124569': ('031', '1111111111', '19.5')}
+mark = dict()
 mark_list = list()
 average_student_mark = dict()
 
