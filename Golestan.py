@@ -1,6 +1,7 @@
 import os
 import time
 import datetime as DT
+import pandas as pd
 import error
 import information as info
 
@@ -9,12 +10,10 @@ professor = dict()
 Class = dict()
 add_student = dict()
 add_professor = dict()
-id_list = list()
 mark = dict()
-mark_list = list()
 average_student_mark = dict()
 
-# all while true loops are for Real-Time checking so if the user enters a wrong input it wom't
+# ? all while true loops are for Real-Time checking so if the user enters a wrong input it wom't
 class Student:
     
     def __init__(self) -> None:
@@ -23,7 +22,6 @@ class Student:
         self.professor = professor
         self.add_st = add_student
         self.add_pr = add_professor
-        self.id_list = id_list
         self.mark = mark
         self.average_st_mark = average_student_mark
 
@@ -33,17 +31,20 @@ class Student:
 
     def register_student(self) -> None:
 
-        # name
+        # ? name
 
         while True:
 
-            name, flag = info.name()
+            f_name, flag1 = info.first_name()
+            l_name, flag2 = info.last_name()
 
-            if not flag:
+            if not flag1 and not flag2:
                 break
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-        # id number
+    
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
+        # ? id number
 
         while True:
 
@@ -55,11 +56,13 @@ class Student:
                     return
             if not flag:
                 break
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
+        # ? entry year
 
         while True:
 
-            # entry year
 
             entry_year = ''
             flag, entry_year = error.try_except(entry_year, "enter the entry year: ")
@@ -79,9 +82,9 @@ class Student:
             else:
                 break
         
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-        # field
+        # ? field
 
         while True:
 
@@ -90,27 +93,38 @@ class Student:
             if not flag:
                 break
 
-        self.student[id_number] = name, entry_year, field, DT.datetime.now()
-        print("welcome to Golestan")    # successful
+        self.student = {'first name': [f_name], 'last name': [l_name], 'id number': [id_number], 
+                        'entry year': [entry_year], 'field': [field], 'date and time': [DT.datetime.now()]}
+        data_student = pd.DataFrame(self.student)
+        
+        if os.path.isfile(r'your saving location\Golestan\Student.csv'):  # to avoid overwriting we check if the file exist or not
+            data_student.to_csv(r'your saving location\Golestan\Student.csv', sep=',', mode='a', index=False, header=False)  # adding new datas to existing csv file
+
+        else:
+            data_student.to_csv(r'your saving location\Golestan\Student.csv', sep=',', mode='w', index=False, header=True)  # creating a new csv file for datas
+
+        print("\nwelcome to Golestan\n")    # + successful
 
 
     ################################################
 
 
+
     def register_professor(self) -> None:
 
-        # name
+        # ? name
 
         while True:
 
-            name, flag = info.name()
+            f_name, flag1 = info.first_name()
+            l_name, flag2 = info.last_name()
 
-            if not flag:
+            if not flag1 and not flag2:
                 break
 
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-        # id number
+        # ? id number
 
         while True:
 
@@ -119,9 +133,9 @@ class Student:
             if not flag:
                 break
 
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-        # field
+        # ? field
 
         while True:
 
@@ -130,8 +144,16 @@ class Student:
             if not flag:
                 break
 
-        self.professor[id_number] = name, id_number, field
-        print("welcome to Golestan")        # success
+        self.professor ={'first name': [f_name], ' last name': [l_name], 'id number':[id_number],'field of study':[field]}
+        data_professor = pd.DataFrame(self.professor)
+        
+        if os.path.isfile(r'your saving location\Golestan\Professor.csv'):  # to avoid overwriting we check if the file exist or not
+            data_professor.to_csv(r'your saving location\Golestan\Professor.csv', sep=',', mode='a', index=False, header=False)  # adding new datas to existing csv file
+
+        else:
+            data_professor.to_csv(r'your saving location\Golestan\Professor.csv', sep=',', mode='w', index=False, header=True)  # creating a new csv file for datas
+        
+        print("\nwelcome to Golestan\n")        # + successful
 
 
     ################################################
@@ -139,18 +161,18 @@ class Student:
 
     def make_class(self) -> None:
 
-        # name
+        # ? name
 
         while True:
 
-            name, flag = info.name()
+            name, flag = info.first_name()
 
             if not flag:
                 break
         
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-        # class id
+        # ? class id
 
         while True:
 
@@ -159,9 +181,9 @@ class Student:
             if not flag:
                 break
 
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-        # field
+        # ? field
 
         while True:
 
@@ -170,298 +192,601 @@ class Student:
             if not flag:
                 break
 
-        self.Class[class_id] = name, field
-        print("class added successfuly")    # success
+        self.Class = {'name': [name], 'class id': [class_id], 'class field': [field]}
+        data_class = pd.DataFrame(self.Class)
+        
+        if os.path.isfile(r'your saving location\Golestan\Class.csv'):  # to avoid overwriting we check if the file exist or not
+            data_class.to_csv(r'your saving location\Golestan\Class.csv', sep=',', mode='a', index=False, header=False)  # adding new datas to existing csv file
+
+        else:
+            data_class.to_csv(r'your saving location\Golestan\Class.csv', sep=',', mode='w', index=False, header=True)  # creating a new csv file for datas
+        
+        print("\nclass added successfully\n")    # + successful
 
 
 
     ################################################
 
 
-    def add_student(self) -> None:  # add student to a class
+    def add_student(self) -> None:  # todo - add student to a class
 
-        # id number
+        # ? id number
 
         while True:
 
             student_id, flag = info.id(id_name= 'student id')
-
-            if self.student != {}:
-                if student_id not in self.student.keys():
-                    error.message("No student with this id number exist")  # error message
-
-            elif not flag:
-                break
-
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
-        # class id
-
-        while True:
+            flag1 = error.try_except_pd(path=r'your saving location\Golestan\Student.csv')  # checking if file is empty or does not exist or not
             
-            class_id, flag = info.id(id_name= ' class id')
+            if not flag:
+                if not flag1:  # file is not empty and exist
+                    data_student = pd.read_csv(r"your saving location\Golestan\Student.csv")
+                    data_student['id number'] = data_student['id number'].astype(str).str.zfill(10)  # add leading zero in id number
+                    
+                    if student_id not in data_student['id number'].values:
+                        error.message("No student found with given id number")  # ! error message
 
-            if self.Class != {}:
-                if class_id not in self.Class.keys():
-                    error.message("no class found with the given class id")  # error message
-
-            if self.Class[class_id][1] != self.student[student_id][2]:
-                error.message("student field does not match")  # error message
-
-            if self.add_st != {}:
-                if class_id in self.add_st[student_id]:
-                    error.message("studnet is already registered to this class")  # error message
-                    return
-                
-            elif not flag:
-                break
-        
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-            
-        """
-        here it'll add student id to the dictionary if it doesn't exist in dict keys
-        then it saves class ids in a list why?
-        because if we wnat to add more class for this student in future we can easilly do it just by appending it
-        """
-
-        if student_id not in self.add_st.keys():
-            self.add_st[student_id] = [class_id]
-            error.message("student added successfully")  # success
-
-        elif student_id in self.add_st.keys():
-            self.add_st[student_id].append(class_id)
-            error.message("student added successfully")  # success
-
-
-    ################################################
-
-
-    def add_professor(self) -> None:    # assign a professor to a class
-
-        # id number
-
-        while True:
-            
-            professor_id, flag = info.id(id_name= 'id number')        
-
-            if professor_id not in self.professor.keys():
-                error.message("no professor with given id number exist")  # error message
-
-            elif not flag:
-                break
-        
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
-        # class id
-
-        while True:
-
-            class_id, flag = info.id(id_name= 'class_id')
-
-
-            if class_id not in self.Class.keys():
-                error.message("no class found with given class id")  # error message
-
-            if self.Class[class_id][1] != self.professor[professor_id][1]:
-                error.message("professor field does not match")  # error message
-
-            elif not flag:
-                break
-        
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-            
-        """
-        the idea here is that if this professor has no class
-        it'll assign a class to the professor and saves the class id number in a list 
-        beacause in future if you want to add more classes to this professor 
-        you can easily do it by just appending it
-        """
-
-        if professor_id not in self.add_pr.keys():
-            self.add_pr[professor_id] = [class_id]
-        
-        # here if this professor already have at least one class
-        # it'll check if this professor have this class already or not
-        # if it doesn't; it'll append the class id to list
-        # otherwise, it will show an error message
-            
-        elif professor_id in self.add_pr.keys():
-            for i in range(0, len(self.add_pr[professor_id])):
-                if class_id != self.add_pr[professor_id][i]:
-                    self.add_pr[professor_id].append(class_id)
-                    error.message("prodessor added to class successfully")  # success
+                    else:
+                        break
 
                 else:
-                    error.message("this class is already assigned to this professor")  # error 
+                    error.message("student csv file is empty or does not exist")  # ! error message
+                    return
+            
+
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+                
+        
+        # ? class id
+
+        while True:
+            
+            class_id, flag = info.id(id_name= 'class id')
+            flag1 = error.try_except_pd(r"your saving location\Golestan\Class.csv")  # checking if file is empty or does not exist or not
+
+            if not flag:
+                if not flag1:  # file is not empty and exist
+                    
+                    flag2 = False
+                    data_class = pd.read_csv(r"your saving location\Golestan\Class.csv")
+                    data_class['class id'] = data_class['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    if class_id not in data_class["class id"].values:
+                        error.message("no class found with the given class id")  # ! error message
+                        flag2 = True
+
+                    else:
+                        
+                        # ? checking the field
+
+                        index_class = data_class.index[data_class['class id'] == class_id][0]
+                        index_student = data_student.index[data_student['id number'] == student_id][0]
+
+                        if data_class.iloc[index_class, 2] != data_student.iloc[index_student, 4]:
+                            error.message("student field does not match")  # ! error message
+                            flag2 = True
+                else:
+                    error.message("class csv file is empty or does not exist")  # ! error message
+                    return
+
+            if not flag2:
+                break
+
+        self.add_st = {'student id': [student_id], 'class id': [class_id]}
+        dataframe_class_student = pd.DataFrame(self.add_st)
+
+        if os.path.isfile(r"your saving location\Golestan\Class-Student.csv"):  # to avoid overwriting we check if the file exist or not
+
+            data_class_student = pd.read_csv(r"your saving location\Golestan\Class-Student.csv")
+
+            data_class_student['student id'] = data_class_student['student id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+            data_class_student['class id'] = data_class_student['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+            index_student = data_class_student.index[data_class_student['student id'] == student_id]
+
+            for i in index_student:
+                if data_class_student['class id'][i] == class_id:
+                    error.message("student is already registered to this class")  # ! error message
+                    return
+                
+            dataframe_class_student.to_csv(r'your saving location\Golestan\Class-Student.csv', sep=',', mode='a', index=False, header=False)  # adding new datas to existing csv file 
+            error.message("student added successfully")  # + successful
+                
+        else:
+            dataframe_class_student.to_csv(r'your saving location\Golestan\Class-Student.csv', sep=',', mode='w', index=False, header=True)  # creating a new csv file for datas
+            error.message("student added successfully")  # + successful
 
 
     ################################################
 
 
-    def student_status(self) -> None:   # shows student name, entering year, field and clsses
+    def add_professor(self) -> None:    # todo - assign a professor to a class
 
-        # id number
+        # ? id number
+
+        while True:
+            
+            professor_id, flag = info.id(id_name= 'professor id')        
+            flag1 = error.try_except_pd(path=r'your saving location\Golestan\Professor.csv')  # checking if file is empty or does not exist or not
+
+            if not flag:
+                if not flag1:  # file is not empty and exist
+
+                    data_professor = pd.read_csv(r"your saving location\Golestan\Professor.csv")
+                    data_professor["id number"] = data_professor['id number'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    if professor_id not in data_professor['id number'].values:
+                        error.message("no professor found with given id number")  # ! error message
+
+                    else:
+                        break
+                
+                else:
+                    error.message("the professor csv file is empty or does not exist")  # ! error message
+                    return
+            
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
+        # ? class id
+
+        while True:
+
+            class_id, flag = info.id(id_name= 'class id')
+            flag1 = error.try_except_pd(path=r'your saving location\Golestan\Class.csv')  # check if the file is empty or does not exist or not
+
+            if not flag:
+                if not flag1:  # file is not empty and exist
+
+                    data_class = pd.read_csv(r'your saving location\Golestan\Class.csv')
+                    data_class['class id'] = data_class['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    if class_id not in data_class['class id'].values:
+                        error.message("no class found with given class id")  # ! error message
+
+                    class_index = data_class.index[data_class['class id'] == class_id][0]
+                    professor_index = data_professor.index[data_professor['id number'] == professor_id][0]
+
+                    if data_class.iloc[class_index, 2] != data_professor.iloc[professor_index, 3]:
+                        error.message("professor field does not match")  # ! error message
+
+                    elif not flag:
+                        break
+                
+                else:
+                    error.message("class csv file is empty or does not exist")
+                    return
+                
+        
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+        
+        self.add_pr = {'professor id': [professor_id], 'class id': [class_id]}
+        dataframe_professor_class = pd.DataFrame(self.add_pr)
+
+        if os.path.isfile(r'your saving location\Golestan\Class-professor.csv'):  # to avoid overwriting we check if the file exist or not
+
+            data_professor_class = pd.read_csv(r"your saving location\Golestan\Class-professor.csv")
+            
+            data_professor_class['professor id'] = data_professor_class['professor id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+            data_professor_class['class id'] = data_professor_class['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+            index_professor = data_professor_class.index[data_professor_class['professor id'] == professor_id]
+
+            for i in index_professor:
+                if data_professor_class['class id'][i] == class_id:
+                    error.message("this class is already assigned to this professor")  # ! error message 
+                    return
+
+            dataframe_professor_class.to_csv(r"your saving location\Golestan\Class-professor.csv", sep=',', mode='a', index= False, header= False)  # add new data to csv file
+            error.message("professor added successfully")  # + successful
+            
+        else:
+            dataframe_professor_class.to_csv(r"your saving location\Golestan\Class-professor.csv", sep=',', mode='w', header= True, index= False)  # creates a new csv file and adds the data
+            error.message("professor added successfully")  # + successful
+
+
+    ################################################
+
+
+    def student_status(self) -> None:   # todo - shows student name, entering year, field and clsses
+
+        # ? id number
 
         while True:
 
             id_number, flag = info.id(id_name= 'id number')
 
-            if self.student != {}:
-                if id_number not in self.student.keys():
-                    error.message("no student found with given id number")
+            if os.path.isfile(r'your saving location\Golestan\Student.csv'):
+                flag1 = error.try_except_pd(path=r"your saving location\Golestan\Student.csv")
 
-            else:   # shows an error message if dict is empty
-                error.message("there are no students")  # error message
+            else:
+                error.message("student.csv file does not exist")  # ! error message
                 return
-            
+
             if not flag:
-                break
+                if not flag1:  # file is not empty and exist
 
-        # show time
+                    data_student = pd.read_csv(r"your saving location\Golestan\Student.csv")
+                    data_student['id number'] = data_student['id number'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    if id_number not in data_student['id number'].values:
+                        error.message("no student found with given id number")  # ! error message
+                    
+                    else:
+                        break
+                
+                else:
+                    error.message("student.csv file is empty or does not exist")  # ! error message
+
+        # ? show time
+
+        """
+        the problem was when it shows the data it also shows the data type and the name (again) when it just uses data_student.iloc ...
+        to solve that; first the data is converted to string and after that we can use string ability to filter those things  
+        """
 
         os.system('cls')
-        print('name: ', self.student[id_number][0])
-        print('entering year: ', self.student[id_number][1])
-        print('field: ', self.student[id_number][2])
-        print('class:')
-        for i in range(0, len(self.add_st[id_number])):
-            class_id = self.add_st[id_number][i]    # save the class id number i
-            print(self.Class[class_id][0])      # shows the class id number i name
-        
-        time.sleep(2)
-        os.system('cls')
+        student_index = data_student.index[data_student['id number'] == id_number]
+        name = str(data_student.iloc[student_index, 0])
+        l_name = str(data_student.iloc[student_index, 1])
+        year = str(data_student.iloc[student_index, 3])
+        field = str(data_student.iloc[student_index, 4])
+
+        print("first name:", name[5:name.find("N")])
+        print("last name:", l_name[5:l_name.find("N")])
+        print("entery year:", year[5:year.find("N")])
+        print("field: ", field[5:field.find("N")])
+
+        # ? showing the classes
+
+        if not os.path.isfile(r"your saving location\Golestan\Class-Student.csv"):  # to avoid overwriting we check if the file exist or not
+            error.message("there is no file for students classes") # ! error message
+        else:
+            flag = error.try_except_pd(path=r"your saving location\Golestan\Class-Student.csv")
+            if not flag:  # file is not empty and exist
+
+                data_class_student = pd.read_csv(r"your saving location\Golestan\Class-Student.csv")
+                data_class_student['student id'] = data_class_student['student id'].astype(str).str.zfill(10) # adds the leading zero to those id's which length is less than 10
+                data_class_student['class id'] = data_class_student['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                if id_number not in data_class_student['student id'].values:
+                    error.message("this student has no class")  # + successful
+                    return
+
+                # ? first of all we save the index of that student id; therefor we can use that to find the class id
+                # ? after saving the first class id; it immedietly goes for finding that class id name
+
+                else:
+                    index_id = data_class_student.index[data_class_student['student id'] == id_number]
+                
+                    print("class: ")
+                    for i in range(0, len(index_id)):
+                        class_id = data_class_student.iloc[i, 1]
+
+                        data_class = pd.read_csv(r"your saving location\Golestan\Class.csv")
+                        data_class['class id'] = data_class['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                        index_class = data_class.index[data_class['class id'] == class_id]
+                        classes = str(data_class.iloc[index_class, 0])
+                        print(classes[5:classes.find("N")])  # + successful
+
+            else:
+                error.message("class - student csv file is empty or does not exist")  # ! error message
 
 
     ################################################
 
 
-    def professor_status(self) -> None:  # shows professor name, field and classes
+    def professor_status(self) -> None:  # todo - shows professor name, field and classes
 
         # id number
 
         while True:
 
-            professor_id, flag = info.id(id_name='id number')
+            professor_id, flag = info.id(id_name='professor id')
 
-            if self.professor != {}:
-                if professor_id not in self.professor.keys():
-                    error.message("no professor founded with given id number")
+            if os.path.isfile(r'your saving location\Golestan\Professor.csv'):  # to avoid overwriting we check if the file exist or not
+                flag1 = error.try_except_pd(path=r"your saving location\Golestan\Professor.csv")
             
-            else:   # shows an error message if dict is empty
-                error.message("there are no professor")  # error message
+            else:
+                error.message("professor.csv file does not exist")  # ! error message
                 return
-            
+
             if not flag:
-                break
+                if not flag1:  #file is not empty and exist
+                    data_professor = pd.read_csv(r"your saving location\Golestan\Professor.csv")
+                    data_professor['id number'] = data_professor['id number'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
 
-        # show time
+                    if professor_id not in data_professor['id number'].values:
+                        error.message("no professor founded with given id number")  # ! error message
+                    
+                    else:
+                        break
+            
+                else:
+                    error.message("professor.csv file is empty or does not exist")  # ! error message
+                    return
+
+        # ? show time
             
         os.system('cls')
-        print('name: ', self.professor[professor_id][0])
-        print('field: ', self.professor[professor_id][1])
-        print('class: ')
-        for i in range(0, len(self.add_pr[professor_id])):
-            class_id = self.add_pr[professor_id][i]   # save the class id, number i
-            print(self.Class[class_id][0])  # shows the class id number i's name - success
+        professor_index = data_professor.index[data_professor['id number'] == professor_id]
+        f_name = str(data_professor.iloc[professor_index, 0])
+        l_name = str(data_professor.iloc[professor_index, 1])
+        field = str(data_professor.iloc[professor_index, 3])
 
-        time.sleep(2)
-        os.system('cls')
+        print('first name:', f_name[5:f_name.find("N")])
+        print("last name:", l_name[5:l_name.find("N")])
+        print('field:', field[5:field.find("N")])
+        
+        # ? showing the classes
+
+        if os.path.isfile(r'your saving location\Golestan\Class-professor.csv'):
+            flag = error.try_except_pd(path=r'your saving location\Golestan\Class-professor.csv')
+
+            
+            if not flag:  # file is not empty and exist
+
+                data_class_professor = pd.read_csv(r'your saving location\Golestan\Class-professor.csv')
+                data_class_professor['professor id'] = data_class_professor['professor id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                data_class_professor['class id'] = data_class_professor['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                # ? first of all we save the index of that student id; therefor we can use that to find the class id
+                # ? after saving the first class id; it immedietly goes for finding that class id name
+                
+                if professor_id not in data_class_professor['professor id'].values:
+                    error.message("this professor has no class")  # + successful
+                    return
+                
+                else:
+                    index_id = data_class_professor.index[data_class_professor['professor id'] == professor_id]
+
+                    print("class:")
+                    for i in range(0, len(index_id)):
+                        class_id = data_class_professor.iloc[i, 1]
+                        
+                        data_class = pd.read_csv(r'your saving location\Golestan\Class.csv')
+                        data_class['class id'] = data_class['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                        index_class = data_class.index[data_class['class id'] == class_id]
+                        classes = str(data_class.iloc[index_class, 0])
+                        print(classes[5:classes.find("N")])  # + successful
+            
+            else:
+                error.message("class - professor csv file is empty or does not exist")  # ! error message
 
 
     ################################################
 
 
-    def class_status(self) -> None:     # shows a class students
+    def class_status(self) -> None:     # todo - shows a class students
 
-        # class id
-
-        while True:
-
-            class_id, flag= info.id(id_name= 'class id')
-
-            if self.Class != {}:
-                if class_id not in self.Class.keys():
-                    error.message("no class founded with given class id")  # error message
-
-            elif not flag:
-                break
-
-        # iterates on add_pr keys and checks if professor have this class or not
-
-        for i in self.add_pr.keys():
-            if class_id in self.add_pr[i]:
-                print(f"teacher: {self.professor[i][0]}")  # success
-                break
-        
-        # it iterates on add_st keys and checks if the student have this class or not
-
-        print("students: ")
-        for i in self.add_st.keys():
-            if class_id in self.add_st[i]:
-                print(self.student[i][0])  # success
-
-        time.sleep(2)
-        os.system('cls')
-
-
-    ################################################
-
-
-    def set_final_mark(self) -> None:  # assigning grade for students
-
-        # professor id number
-
-        while True:
-
-            professor_id, flag = info.id(id_name= 'professor id')
-
-            if professor_id not in self.professor.keys():
-                error.message("no professor found with given id")  # error message
-
-            elif not flag:
-                break
-        
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
-        # student id number
-
-        while True:
-
-            student_id, flag = info.id(id_name= student_id)
-
-            if student_id not in self.student.keys():
-                error.message("no student found with given id")  # error message
-            
-            elif not flag:
-                break
-        
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
-        # class id
+        # ? class id
 
         while True:
 
             class_id, flag = info.id(id_name= 'class id')
+            flag1 = error.try_except_pd(path=r'your saving location\Golestan\Class.csv')
 
-            if class_id not in self.Class.keys():
-                error.message("no class found with given id")  # error message
-        
-            # does professor have this class?
+            if not flag:
+                if not flag1:  # file is not empty and exist
+                    data_class = pd.read_csv(r'your saving location\Golestan\Class.csv')
+                    data_class['class id'] = data_class['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    if class_id not in data_class['class id'].values:
+                        error.message("no class found with given class id")  # ! error message
+                    else:
+                        break
+                
+                else:
+                    error.message("class.csv file is empty or does not exist") # ! error message
+
+        # ? showing the professor name
+                    
+        if os.path.isfile(r"your saving location\Golestan\Professor.csv"):  # professor file must exist
+            if os.path.isfile(r"your saving location\Golestan\Class-professor.csv"):  # class professor file must exist
+
+                flag = error.try_except_pd(path=r"your saving location\Golestan\Class-professor.csv")
+                flag1 = error.try_except_pd(path=r"your saving location\Golestan\Professor.csv")
             
-            if class_id not in self.add_pr[professor_id]:
-                error.message("this professor isn't registered on this class")  # error message
+                if not flag and not flag1:  # files are not empty and exist
+
+                    data_class_professor = pd.read_csv(r'your saving location\Golestan\Class-professor.csv')
+                    data_professor = pd.read_csv(r'your saving location\Golestan\Professor.csv')
+
+                    data_professor['id number'] = data_professor['id number'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                    data_class_professor['professor id'] = data_class_professor['professor id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                    data_class_professor['class id'] = data_class_professor['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    index_class = data_class_professor.index[data_class_professor['class id'] == class_id][0]
+                    professor_id = data_class_professor.iloc[index_class, 0]
+                    index_professor = data_professor.index[data_professor['id number'] == str(professor_id)]
+                    professor_f_name = str(data_professor.iloc[index_professor, 0])
+                    professor_l_name = str(data_professor.iloc[index_professor, 1])
+
+                    print(f"\nteacher: \n{professor_f_name[5:professor_f_name.find("N")] + professor_l_name[5:professor_l_name.find("N")]}")  # + successful
+
+
+                elif flag1:
+                    error.message("professor.csv file is empty or does not exist")  # ! error message
+                    return
+
+                elif flag:
+                    error.message("class - professor csv file is empty or does not exist")  # ! error message
+                    return
             
-            # is the student registered on class?
-
-            if student_id not in self.add_st[class_id]:
-                error.message("this student isn't registered on this class")  # error message
-
-            elif not flag:
-                break
+            else:
+                error.message("class - professor csv file does not exist")  # ! error message
+                return
+            
+        else:
+            error.message("professor.csv file does not exist")  # ! error message
+            return
         
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+        # ? showing the students
 
-        # entering grade
+        if os.path.isfile(r'your saving location\Golestan\Student.csv'):  # student file must exist
+            if os.path.isfile(r'your saving location\Golestan\Class-Student.csv'):  # class - student file must exist
+
+                flag = error.try_except_pd(r'your saving location\Golestan\Class-Student.csv')
+                flag1 = error.try_except_pd(r'your saving location\Golestan\Student.csv')
+
+                if not flag and not flag1:  # files are not empty and exist
+
+                    data_class_student = pd.read_csv(r'your saving location\Golestan\Class-Student.csv')
+                    data_student = pd.read_csv(r'your saving location\Golestan\Student.csv')
+
+                    data_class_student['student id'] = data_class_student['student id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                    data_class_student['class id'] = data_class_student['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                    data_student['id number'] = data_student['id number'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    class_student_index = data_class_student.index[data_class_student['class id'] == class_id]
+                    print("students:")
+                    for i in class_student_index:
+                        student_id = data_class_student.iloc[int(i), 0]
+
+                        student_index = data_student.index[data_student['id number'] == student_id]
+                        student_f_name = str(data_student.iloc[student_index, 0])
+                        student_l_name = str(data_student.iloc[student_index, 1])
+
+                        print(student_f_name[5:student_f_name.find("N")] + student_l_name[5:student_l_name.find("N")])  # + successful
+
+                elif flag:
+                    error.message("class - student csv file is empty or does not exist")  # ! error message
+                    return
+                
+                elif flag1:
+                    error.message("student.csv file is empty or does not exist") # ! error message
+                    return
+            
+            else:
+                error.message("class - stundent csv file does not exist")  # ! error message
+                return
+        
+        else:
+            error.message("stundent.csv file does not exist") # ! error message
+            return
+
+
+    ################################################
+
+
+    def set_final_mark(self) -> None:  # todo - assigning grade for students
+
+        # ? professor id number
+
+        while True:
+
+            professor_id, flag = info.id(id_name= 'professor id')
+            flag1 = error.try_except_pd(path= r'your saving location\Golestan\Professor.csv')
+            
+            if not flag:
+                if not flag1:  # file is not empty and exist
+                    data_professor = pd.read_csv(r'your saving location\Golestan\Professor.csv')
+                    data_professor['id number'] = data_professor['id number'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    if professor_id not in data_professor['id number'].values:
+                        error.message("no professor found with given id")  # ! error message
+
+                    else:
+                        break  # + successful
+                else:
+                    error.message("the professor.csv file is empty or does not exist")  # ! error messgae
+        
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
+        # ? student id number
+
+        while True:
+
+            student_id, flag = info.id(id_name= 'student id')
+            flag1 = error.try_except_pd(path=r'your saving location\Golestan\Student.csv')
+
+            if not flag:
+                if not flag1:  # file is not empty and exist
+                    data_student = pd.read_csv(r'your saving location\Golestan\Student.csv')
+                    data_student['id number'] = data_student['id number'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    if student_id not in data_student['id number'].values:
+                        error.message("no student found with given id")  # ! error message
+
+                    else:
+                        break  # + successful
+
+                else:
+                    error.message("the student.csv file is empty or does not exist")  # ! error message
+        
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
+        # ? class id
+
+        while True:
+
+            class_id, flag = info.id(id_name= 'class id')
+            flag1 = error.try_except_pd(path=r'your saving location\Golestan\Class.csv')
+            flag2 = error.try_except_pd(path=r'your saving location\Golestan\Class-professor.csv')
+            flag3 = error.try_except_pd(path=r'your saving location\Golestan\Class-Student.csv')
+
+            if not flag:
+                if not flag1 and not flag2 and not flag3:  # class, class - professor, class - student files are not empty and exist
+
+                    data_class = pd.read_csv(r'your saving location\Golestan\Class.csv')
+                    data_class['class id'] = data_class['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    data_class_student = pd.read_csv(r'your saving location\Golestan\Class-Student.csv')
+                    data_class_student['class id'] = data_class_student['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    data_class_professor = pd.read_csv(r'your saving location\Golestan\Class-professor.csv')
+                    data_class_professor['class id'] = data_class_professor['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                    
+
+                    if class_id not in data_class['class id'].values:
+                        error.message("no class found wih given class id")  # ! error message
+
+                    elif class_id not in data_class_professor['class id'].values:
+                        error.message("this class has no professor")  # ! error message
+
+                    elif class_id not in data_class_student['class id'].values:
+                        error.message("this class has no student")  # ! error message
+                    
+                    else:
+                        break  # + successful
+                
+                elif flag1:
+                    error.message("class.csv file is empty or does not exist")  # ! error message
+
+                elif flag2:
+                    error.message("class - professor.csv file is empty or does not exist")  # ! error message
+
+                elif flag3:
+                    error.message("class - student.csv file is empty or does not exist")  # ! error message
+        
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
+
+        # ? checking if the professor and the student have this class
+
+
+        # professor
+
+        data_class_professor['professor id'] = data_class_professor['professor id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+        professor_index = data_class_professor.index[data_class_professor['professor id'] == professor_id][0]
+
+        if data_class_professor.iloc[professor_index, 1] != class_id:
+            error.message("this class is not assigned to this professor")  # ! error message
+            return
+        
+        # student
+
+        data_class_student['student id'] = data_class_student['student id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+        student_index = data_class_student.index[data_class_student['student id'] == student_id]
+        
+        for i in student_index:
+            if data_class_student.iloc[i, 1] != class_id:
+                error.message("this student is not assigned to this class")  # ! error message
+                return
+
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
+        # ? entering grade
 
         while True:
 
@@ -470,174 +795,256 @@ class Student:
             if grade == '':
                 grade = None
 
-            elif error.just_number(grade):
-                error.message("only numbers are allowed")  #error message
+            elif error.just_number(grade) and '.' not in grade:
+                error.message("only numbers are allowed")  # ! error message
 
-            elif int(grade) < 0 or int(grade) > 20:
-                error.message("grade must be a number between 0 and 20")  # error message
+            elif float(grade) < 0 or float(grade) > 20:
+                error.message("grade must be a number between 0 and 20")  # ! error message
             
             else:
                 break
         
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-            
-        """
-        the idea in here is that if this student doesn't have any grade
-        it'll assign grade with class id and professor id to that student using 2D array
-        because in future if we wanted to add more grades to this student we can easily do it by appending the list
-        """
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-        if student_id not in self.mark.keys():
-            self.mark[student_id] = [[professor_id, class_id, grade]]
+        self.mark = {'student id': [student_id], 'grade': [grade], 'professor id': [professor_id], 'class id':[class_id]}
+        data_mark = pd.DataFrame(self.mark)
 
-        
-        # here if it has a student with given student id in dict keys 
-        # it will check if that student have grade for that class
-        # if it does have grade asks for confirmation to change the grade 
-        # to do that it will remove the old array and apped a new one
-        # if it does not have grade it will add a new array
-        
-        elif student_id in self.mark.keys():
-            
-            for i in range(0, len(self.mark[student_id])):
-                if class_id != self.mark[student_id][i][1]:
-                    self.mark[student_id].append([professor_id, class_id, grade])
-                    error.message("student grade added successfully")  # success
+        if os.path.isfile(r'your saving location\Golestan\Grade.csv'):
 
-                else:
-                    while True:
+            data_grade = pd.read_csv(r"your saving location\Golestan\Grade.csv")
+            data_grade['student id'] = data_grade['student id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+            data_grade['class id'] = data_grade['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
 
-                        flag, x = error.try_except(x, "this student already have a grade do you want to change it? (y/n)")
-                        if flag:
-                            error.message("enter a valid character")  # error message
+            if student_id not in data_grade['student id'].values:
+                data_mark.to_csv(r"your saving location\Golestan\Grade.csv", sep=',', mode='a', index=False, header=False)  # adding new data to exisitng csv file
+                error.message("student garde added successfully")  # + successful
+
+            elif class_id not in data_grade['class id'].values:
+                data_mark.to_csv(r'your saving location\Golestan\Grade.csv', sep=',', mode='a', index=False, header=False)  # adding neew data to existing csv file
+                error.message("student grade added successfully")  # + successful
+
+            else:
+                while True:
+                    x = input("this student already have a grade do you want to change it? (y/n)")
+                    x = x.lower()
+                    flag = error.just_str(x)
+
+                    if not flag:
+                        if x == 'y':
+                            
+                            # because a student can have more than one class we have to find the index of the class by using the list of stundent id indexes
+
+                            data_student_index = data_grade.index[data_student['student id'] == student_id]
+
+                            for i in data_student_index:  
+                                if data_grade['class id'][i] == class_id:
+                                    index_id = i
+                                    break
+                            data_grade.iat[index_id, 1] = grade  # + successful
+                            error.message("student grade successfully changed")  # + successful
+
+                        elif x == 'n':
+                            return  # + successful
                         
-                        elif error.just_str(x) == True:
-                            error.message("letters only")  # error message
+                    else:
+                        error.message("only letters y and n are allowed")
+                        
+                
 
-                        else:
-                            if x == 'y':
-                                self.mark[student_id].remove(self.mark[student_id][i])
-                                self.mark[student_id].append([professor_id, class_id, grade])
-                                error.message("grade changed successfully")  # success
+        else:
+            data_mark.to_csv(r'your saving location\Golestan\Grade.csv', sep=',', mode='w', index=False, header=True)  # creating new csv file for datas
+            error.message("grade added successfully")  # + success
 
-                            elif x == 'n':
-                                break
-    
 
     ################################################
 
 
-    def mark_student(self) -> None:  # shows a student grade for a class
+    def mark_student(self) -> None:  # todo - shows a student grade for a class
         
-        # id number
+        # ? id number
 
         while True:
 
             student_id, flag = info.id(id_name= 'student id')
-            
-            if student_id not in self.student.keys():
-                error.message("no student found with given id number")  # error messsage
+            flag1 = error.try_except_pd(path=r'your saving location\Golestan\Student.csv')
 
-            elif not flag:
-                break
+            if not flag:  
+                if not flag1:  # file is not empty and exist
+                    data_student = pd.read_csv(r"your saving location\Golestan\Student.csv")
+                    data_student['id number'] = data_student['id number'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
 
-        #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-          
-        # class id
+                    if student_id not in data_student['id number'].values:
+                        error.message("no student found with given id number")  # ! error message
+
+                    else:
+                        break  # + successful
+                else:
+                    error.message("student.csv file is empty or does not exist")  # ! error message
+
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+        
+        # ? class id
 
         while True:
 
             class_id, flag = info.id(id_name= 'class id')
+            flag1 = error.try_except_pd(path=r'your saving location\Golestan\Class.csv')
+            flag2 = error.try_except_pd(path=r'your saving location\Golestan\Class-Student.csv')
+            flag3 = False
 
-            if class_id not in self.Class.keys():
-                error.message("no class found with given class id")  # error message
+            if not flag:
+                if not flag1 and not flag2:  # files are not empty and exist
+
+                    data_class = pd.read_csv(r"your saving location\Golestan\Class.csv")
+                    data_class_student = pd.read_csv(r"your saving location\Golestan\Class-Student.csv")
+
+                    data_class_student['student id'] = data_class_student['student id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                    data_class_student['class id'] = data_class_student['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                    data_class['class id'] = data_class['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    student_index = data_class_student.index[data_class_student['student id'] == student_id]
+
+                    for i in student_index:
+                        if data_class_student.iloc[i, 1] != class_id:
+                            error.message("this student is not registered to this class")  # ! error message
+                            flag3 = True
+                            break
+                    
+                    if class_id not in data_class['class id'].values:
+                        error.message("no class found with given class id")  # ! error message
+                    
+                    elif not flag3:
+                        break  # + successful
                 
-            if class_id not in self.add_st[student_id]:
-                error.message("student is not registered in this class")  # error message
-            
-            elif not flag:
-                break
+                elif flag1:
+                    error.message("class.csv file is empty or does not exist")  # ! error message
+
+                elif flag2:
+                    error.message("class - student csv file is empty or does not exist")  # ! error message
+
         
-        # show time
+        # ? show time
             
-        class_name = self.Class[class_id][0]
-        student_name = self.student[student_id][0]
-        for i in range(0,len(self.mark[student_id])):  # saving grade
-            if self.mark[student_id][i][1] == class_id:
-                grade = self.mark[student_id][i][2]
-                break
+        # class name
+
+        class_index = data_class.index[data_class['class id'] == class_id][0]
+        class_name = data_class.iloc[class_index, 0]
+
+        # student name
+        
+        student_index = data_student.index[data_student['id number'] == student_id][0]
+        student_f_name = data_student.iloc[student_index, 0]
+        student_l_name = data_student.iloc[student_index, 1]
+
+        # grade
+
+        flag = error.try_except_pd(path=r'your saving location\Golestan\Grade.csv')
+
+        if not flag:  # file is not empty and exist
+
+            data_grade = pd.read_csv(r'your saving location\Golestan\Grade.csv')
+            data_grade['student id'] = data_grade['student id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+            data_grade['class id'] = data_grade['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+            student_index = data_grade.index[data_grade['student id'] == student_id]
+
+            for i in student_index: 
+                if data_grade.iloc[i, 3] == class_id:
+                    grade = data_grade.iloc[i, 1]
+                    break  # + successful
+        else:
+            error.message("Grade.csv file does not exist")  # ! error message
 
         os.system('cls')
         print(f"class name: {class_name}")
-        print(f"name: {student_name}")
-        print(f"grade: {grade}")  # success
+        print(f"name: {student_f_name} {student_l_name}")
+        print(f"grade: {grade}\n\n")  # + successful
         
 
     ################################################
 
 
-    def mark_list(self) -> None:  # shows a grade list for the class
+    def mark_list(self) -> None:  # todo - shows a grade list for the class
 
-        # class id
+        # ? class id
 
         while True:
 
             class_id, flag = info.id(id_name= 'class id')
+            flag1 = error.try_except_pd(r'your saving location\Golestan\Grade.csv')
 
-            temp = Student()
-            if class_id not in self.Class.keys():
-                error.message("no lass found with given class id")  # error meesage
+            if not flag:
+                if not flag1:  # file is not empty and exist
 
-            elif not flag:
-                break
+                    data_grade = pd.read_csv(r'your saving location\Golestan\Grade.csv')
+                    data_student = pd.read_csv(r'your saving location\Golestan\Student.csv')
+                    data_grade['student id'] = data_grade['student id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                    data_grade['class id'] = data_grade['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                    data_student['id number'] = data_student['id number'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
 
-        # checking if a professor have any class with this class id
+                    if class_id not in data_grade['class id'].values:
+                        error.message("no class found with given class id")  # ! error message meesage
 
-        for i in self.add_pr.keys():
-            if class_id not in self.add_pr[i][0]:
-                error.message("this class has no professor")  # error message
-                temp.mark_list()
+                    else:
+                        break  # + successful
+                else:
+                    error.message("grade.csv file is empty or does not exist")  # ! error message
 
-        # checking if this class has any student
+        # ? show time
 
-        for i in self.add_st.keys():
-            if class_id not in self.add_st[i]:
-                error.message("this class has no student")  # error message
-                temp.mark_list()
+        index_class = data_grade.index[data_grade['class id'] == class_id]
 
-        for i in self.mark.keys():
-            if class_id in self.mark[i]:
-                print(f"name: {self.student[i][0]}      {self.mark[i][2]}")  # success
+        for i in index_class:
+            if data_grade['class id'][i] == class_id:
+                index_student = data_student.index[data_student['id number'] == data_grade.iloc[i, 0]][0]
+                print(f"name: {data_student.iloc[index_student, 0]}  {data_student.iloc[index_student, 1]}      {data_grade.iloc[i, 1]}\n\n")  # + successful
 
 
     ################################################
 
 
-    def average_mark_professor(self) -> None:  # shows the avrage assigned mark by one professor
+    def average_mark_professor(self) -> None:  # todo - shows the avrage assigned mark by one professor
 
-        # professor id number
+        # ? professor id number
 
         while True:
 
             professor_id, flag = info.id(id_name= 'professor id')
+            flag1 = error.try_except_pd(path=r'your saving location\Golestan\Professor.csv')
+            flag2 = error.try_except_pd(path=r"your saving location\Golestan\Grade.csv")
 
-            if professor_id not in self.professor.keys():
-                error.message("no professor found with given id number")
+            if not flag:
+                if not flag1 and not flag2:  # files are not empty and exist
 
-            elif not flag:
-                break
+                    data_professor = pd.read_csv(r'your saving location\Golestan\Professor.csv')  
+                    data_grade = pd.read_csv(r"your saving location\Golestan\Grade.csv")
+
+                    data_professor['id number'] = data_professor['id number'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                    data_grade['professor id'] = data_grade['professor id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    if professor_id not in data_professor['id number'].values:
+                        error.message("no professor found with given id number")  # ! error message
+
+                    else:
+                        break  # + successful
+                elif flag1:
+                    error.message('professor.csv file is empty or does not exist')  # ! error message
+
+                elif flag2:
+                    error.message("grade.csv file is empty or does not exist")  # ! error message
         
         sum = 0
         count = 0   # counts how many students are graded by this professor
-        for i in self.mark.keys():
-            if professor_id in self.mark[i]:
-                if self.mark[i][2] != None:
-                    sum += int(self.mark[i][2])
-                    count += 1
+        professor_index = data_grade.index[data_grade['professor id'] == professor_id]
+
+        for i in professor_index:
+            sum += float(data_grade.iloc[i, 1])
+            count += 1
 
         if sum != 0:
             os.system("cls")
-            print(f"average grade: {round(sum/count, 2)}")
+            print(f"average grade: {round(sum/count, 2)}")  # + successful
+            error.message("")
         else:
             print(None)
 
@@ -645,56 +1052,77 @@ class Student:
     ################################################
 
 
-    def average_mark_student(self) -> None:  # shows the average mark of a student
+    def average_mark_student(self) -> None:  # todo - shows the average mark of a student
 
-        # id number
+        # ? id number
 
         while True:
 
             student_id, flag = info.id(id_name= 'id number')
+            flag1 = error.try_except_pd(path=r'your saving location\Golestan\Student.csv')
+            flag2 = error.try_except_pd(path=r"your saving location\Golestan\Grade.csv")
 
-            if self.student != {}:
-                if student_id not in self.student.keys():
-                    error.message("no student found with given id number")  #error message
+            if not flag:
+                if not flag1 and not flag2:  # files are not empty and exist
+                    
+                    data_student = pd.read_csv(r"your saving location\Golestan\Student.csv")
+                    data_grade = pd.read_csv(r'your saving location\Golestan\Grade.csv')
 
-                elif student_id not in self.mark.keys():
-                    error.message("this student has no grade")  # error message
+                    data_student['id number'] = data_student['id number'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                    data_grade['student id'] = data_grade['student id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
 
-                elif not flag:
-                    break
+                    if student_id not in data_student['id number'].values:
+                        error.message('no student found with given id number')  # ! error message
+                    else:
+                        break  # + successful
+                
+                elif flag1:
+                    error.message("student.csv file is empty or does not exist")  # ! error message
+
+                elif flag2:
+                    error.message("grade.csv file is empty or does not exist")  # ! error message
 
         # calculates average
 
-        """
-        here we iterate on self.mark with given student id number to find the grade
-        and calculate sum.
-        with every sum; count value will be increased by one unit
-        it also saves the field and the entery year to for easier search in future
-        """
-
-        sum = count = 0
-        for i in range(0, len(self.mark[student_id])):
-            if self.mark[student_id][i][2] != None:
-                sum += float(self.mark[student_id][i][2])
-                count += 1
+        sum = 0
+        count = 0
+        student_index = data_grade.index[data_grade['student id'] == student_id]
+        for i in student_index:
+            sum += float(data_grade.iloc[i, 1])
+            count += 1
 
         if sum != 0:
             os.system('cls')
-            print('average student mark is ' + str(round((sum / count), 2)) + '\n')  #success
-            self.average_st_mark[student_id].append([str(round((sum / count), 2)), 
-                                                     self.student[student_id][1], 
-                                                     self.student[student_id][2]])
+            print('average student mark is ' + str(round((sum / count), 2)) + '\n')  # + successful
+            error.message("")
 
         else:
-            error.message(None)  # success
+            error.message(None)  # + successful
+        
+        # saving these information for next function
+
+        student_index = data_student.index[data_student['id number'] == student_id][0]
+
+        self.average_st_mark = {'student id': [data_student.iloc[student_index, 2]],
+                                'entry year': [data_student.iloc[student_index, 3]], 
+                                'field': [data_student.iloc[student_index, 4]],
+                                'grade':[str(round((sum / count), 2))]}
+        data_average = pd.DataFrame(self.average_st_mark)
+
+        if os.path.isfile(r'your saving location\Golestan\Average-mark.csv'):  # to avoid overwriting we check if the file exist or not
+            data_average.to_csv(r'your saving location\Golestan\Average-mark.csv', sep=',', mode='a', index=False, header=False)  # adding new datas to existing csv file
+
+        else:
+            data_average.to_csv(r'your saving location\Golestan\Average-mark.csv', sep=',', mode='w', index=False, header=True)  # creating a new csv file for datas
+
 
 
     ################################################
 
 
-    def top_student(self) -> None:  # shows the top student of a class
+    def top_student(self) -> None:  # todo - shows the top student of a specific field and entry year
         
-        # field
+        # ? field
 
         while True:
 
@@ -702,15 +1130,18 @@ class Student:
 
             if not flag:
                 break
-                
+        
+        # $ #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
+        # ? entry year
+
         while True:
 
-            # entry year
 
             entry_year = ''
             flag, entry_year = error.try_except(entry_year, "enter the entry year: ")
 
-            if flag:
+            if not flag:
                 error.message("enter a valid value")
 
             if error.just_number(entry_year):
@@ -724,67 +1155,110 @@ class Student:
             
             else:
                 break
-        
-        """
-        in here due to the saving method we used in average mark student
-        we can check both entry year and field with one loop and find maximum grade
-        """
 
-        max = 0
-        id = ''
-        for i in self.average_st_mark.keys():
-            if self.average_st_mark[i][1] == entry_year and self.average_st_mark[i][2] == field:
-                if float(self.average_st_mark[i][0]) > max:
-                    max = float(self.average_st_mark[i][0])
-                    id = i
-                elif float(self.average_st_mark[i][0]) == max:
-                    if self.student[i][3] < self.student[id][3]:
-                        max = float(self.average_st_mark[i][0])
+        flag = error.try_except_pd(path=r'your saving location\Golestan\Average-mark.csv')
+        flag1 = error.try_except_pd(path=r'your saving location\Golestan\Student.csv')
+
+        if not flag and not flag1:  # files are not empty and exist and exist
+
+            data_av_grade = pd.read_csv(r'your saving location\Golestan\Average-mark.csv')
+            data_student = pd.read_csv(r"your saving location\Golestan\Student.csv")
+            
+            data_av_grade['student id'] = data_av_grade['student id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+            data_student['id number'] = data_student['id number'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+            
+            grade_index = data_av_grade.index[data_av_grade['entry year'] == entry_year]
+
+            # ? finding maximum
+            max = 0
+            id = ''
+            for i in grade_index:
+                if data_av_grade.iloc[i, 2] == field:
+                    if float(data_av_grade[i, 3]) > max:
+                        max = float(data_av_grade[i, 3])
+                        id = data_av_grade[i, 0]
+
+            student_index = data_student.index[data_student['id number'] == id][0]
+            print(f'name: {data_student[student_index, 0]} {data_student[student_index, 1]} \ngrade: {max}\n')  # + successful
+        
+        elif flag:
+            error.message("average - mark.csv file is empty or doesn't exist")  # ! error message
+
+        elif flag1:
+            error.message("student.csv file is empt or doesn't exist")  # ! error message
 
 
     ################################################   
 
 
-    def top_mark(self) -> None:  # shows the highest mark of a class
+    def top_mark(self) -> None:  # todo - shows the highest mark of a class
 
-        # class id
+        # ? class id
 
         while True:
 
             class_id, flag = info.id(id_name= 'class id')
 
+            flag1 = error.try_except_pd(path=r'your saving location\Golestan\Class.csv')
+            flag2 = error.try_except_pd(path=r'your saving location\Golestan\Grade.csv')
+            
+
             if not flag:
-                break
+                if not flag1 and not flag2:  # files are not empty and exist
+
+                    data_class = pd.read_csv(r'your saving location\Golestan\Class.csv')
+                    data_grade = pd.read_csv(r"your saving location\Golestan\Grade.csv")
+
+                    data_class['class id'] = data_class['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+                    data_grade['class id'] = data_grade['class id'].astype(str).str.zfill(10)  # adds the leading zero to those id's which length is less than 10
+
+                    if class_id not in data_class['class id'].values:
+                        error.message("no class found with given id number")  # ! error message
+
+                    if class_id not in data_grade['class id'].values:
+                        error.message(None)  # + successful
+                        return
+                    
+                    else:
+                        break
+
+                elif flag1:
+                    error.message("class.csv file is empty or doesn't exist")  # ! error message
+
+                elif flag2:
+                    error.message("grade.csv file is empty or doesn't exist")  # ! error message
         
+        class_index = data_grade.index[data_grade['class id'] == class_id]
         max = 0
-        for i in self.mark.keys():  # iterated on keys
-            for j in range(0, len(self.mark[i])):  # iterates on values of key i
+        for i in class_index:
+            if float(data_grade.iloc[i, 1]) > max:
+                max = float(data_grade.iloc[i, 1])
 
-                if self.mark[i][j][1] == class_id:
-                    if self.mark[i][j][2] != None and self.mark[i][j][2] > max:
-                        max = self.mark[i][j][2]
-
-        if max == 0:
-            error.message("this class students doesn't have any mark")  # success
-        else:
-            os.system("cls")
-            print(f'maximum grade for this calss is {max}')
-            time.sleep(3)
-            return
+        os.system("cls")
+        print(f'maximum grade for this class is {max}')  # + successful
+        time.sleep(3)
+        return
         
 
 ################################################################################################
             
     
-# main menu
+# ? main menu
             
 while True:
 
-    print('1 - register student \t\t 2 - register professor \n3 - make class \t\t         4 - add student')
-    print('5 - add professor \t\t 6 - student status \n7 - professor status \t\t 8 - class status')
-    print('9 - set final mark \t\t 10 - mark student \n11 - average professor mark \t 12 - average student mark')
-    print('13 - top student \t\t 14 - top mark \n15 - mark list')
-    x = int(input(''))
+    while True:
+        print('1 - register student \t\t 2 - register professor \n\n3 - make class \t\t         4 - add student')
+        print('\n5 - add professor \t\t 6 - student status \n\n7 - professor status \t\t 8 - class status')
+        print('\n9 - set final mark \t\t 10 - mark student \n\n11 - average professor mark \t 12 - average student mark')
+        print('\n13 - top student \t\t 14 - top mark \n\n15 - mark list')
+        x = int(input(''))
+        flag = error.just_number(x)
+
+        if flag:
+            error.message("only number")  # ! error message
+        else:
+            break
     os.system('cls')
 
     if x == 1:
@@ -832,3 +1306,5 @@ while True:
     elif x == 15:
         a = Student()
         a.mark_list()
+    else:
+        error.message("select correct number")  # ! error message
