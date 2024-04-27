@@ -1,38 +1,67 @@
 import error
 
-flag_info = False
-def name() -> str:
+
+def first_name() -> str:
 
     while True:
 
-        # name
+        # ? first name
 
-        name = ''
-        flag, name = error.try_except(name, "enter name: ")
-        name = name.lower()
+        flag_info = False
+        f_name = ''  # first name
+        flag, f_name = error.try_except(f_name, "enter first name: ")
+        f_name = f_name.lower()
     
         if flag:
             error.message("enter a valid character")
             flag_info = True
 
-        if len(name) < 1 or len(name) > 20:     
+        if len(f_name) < 1 or len(f_name) > 20:     
             error.message("not enough or more than enough characters")
             flag_info = True
-      
-        elif error.just_str(name):
+
+        elif error.just_str(f_name):
             error.message("only letters is allowed")
             flag_info = True
             
         else:
             # break
-            return name, flag_info
+            return f_name, flag_info
+        
+def last_name() -> str:
+
+    while True:
+
+        # ? last name
+
+        flag_info = False
+        l_name = ''  # last name
+        flag, l_name = error.try_except(l_name, "enter last name: ")
+        l_name = l_name.lower()
+    
+        if flag:
+            error.message("enter a valid character")
+            flag_info = True
+
+        if len(l_name) < 1 or len(l_name) > 20:     
+            error.message("not enough or more than enough characters")
+            flag_info = True
+
+        elif error.just_str(l_name):
+            error.message("only letters is allowed")
+            flag_info = True
+            
+        else:
+            # break
+            return l_name, flag_info
 
 def id(id_name) -> str:
 
     while True:
 
-        # id number
+        # ? id number
 
+        flag_info = False
         var_name = ''
         flag, var_name = error.try_except(var_name, f"enter {id_name} number: ")
 
@@ -55,8 +84,9 @@ def field() -> str:
         
     while True:
 
-        # field
+        # ? field
 
+        flag_info = False
         field = ''
         flag, field = error.try_except(field, "enter field: ")
         field = field.lower()
