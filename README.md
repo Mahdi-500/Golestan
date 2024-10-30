@@ -22,7 +22,7 @@
 # notes
 be carefule to replace "your saving location" with the location that you want to save the csv file
 
-**_(for vs code users)_** if you've noticed some symbols like !, +, ? and some words like todo; these are for coloring the comments using better comment extention with following cinfiguretion in setting.json file
+**_(for vs code users)_** if you've noticed some symbols like !, +, ? and some words like todo; these are for coloring the comments using better comment extention with following configuration in setting.json file
 
 
     "better-comments.multilineComments": true,
